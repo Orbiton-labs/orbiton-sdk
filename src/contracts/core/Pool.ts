@@ -132,7 +132,7 @@ namespace PoolWrapper {
     }
 
     async getFeesGrowthGlobal(provider: ContractProvider): Promise<bigint[]> {
-      const result = await provider.get('get_fees_growth_global', []);
+      const result = await provider.get('get_fee_growth_global', []);
       const tuple = result.stack;
       const feeGrowth0Global = tuple.readBigNumber();
       const feeGrowth1Global = tuple.readBigNumber();
