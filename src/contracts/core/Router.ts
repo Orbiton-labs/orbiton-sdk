@@ -21,6 +21,7 @@ namespace RouterWrapper {
     UpdateAccountCode: crc32('op::update_account_code'),
     UpdateBatchTickCode: crc32('op::update_batch_tick_code'),
     UpdatePositionCode: crc32('op::update_position_code'),
+    CallbackCreatePool: crc32('op::cb_create_pool'),
   };
 
   export interface InstantiateMsg {
