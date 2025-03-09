@@ -19,6 +19,7 @@ namespace PoolWrapper {
     Swap: crc32('op::swap'),
     Burn: crc32('op::burn'),
     CallBackLiquidity: crc32('op::cb_add_liquidity'),
+    CallBackMintPosition: crc32('op::cb_mint_position'),
   };
 
   export interface InstantiateMsg {
