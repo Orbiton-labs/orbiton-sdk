@@ -51,10 +51,8 @@ export const computePoolAddress = (
 ) => {
   const stateInitBuilder = beginCell()
     .storeUint(0, 2)
-    .storeSlice(Cell.fromBoc(Buffer.from(POOL_BOC, 'hex'))[0].asSlice())
-    .storeSlice(
-      packPoolData(routerAddress, jetton0Wallet, jetton1Wallet, fee, tickSpacing).asSlice(),
-    )
+    .storeMaybeRef(Cell.fromBoc(Buffer.from(POOL_BOC, 'hex'))[0])
+    .storeMaybeRef(packPoolData(routerAddress, jetton0Wallet, jetton1Wallet, fee, tickSpacing))
     .storeUint(0, 1)
     .endCell();
   return beginCell()

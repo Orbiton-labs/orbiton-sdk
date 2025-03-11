@@ -40,8 +40,8 @@ export const computePositionAddress = (
   const positionData = packPositionData(tickLower, tickUpper, owner, poolAddress);
   const stateInitBuilder = beginCell()
     .storeUint(0, 2)
-    .storeSlice(Cell.fromBoc(Buffer.from(POSITION_BOC, 'hex'))[0].asSlice())
-    .storeSlice(positionData.asSlice())
+    .storeMaybeRef(Cell.fromBoc(Buffer.from(POSITION_BOC, 'hex'))[0])
+    .storeMaybeRef(positionData)
     .storeUint(0, 1)
     .endCell();
   return beginCell()
