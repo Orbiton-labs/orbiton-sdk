@@ -3,10 +3,10 @@ import { storePositionStorage } from '../tlbs/position';
 import { POSITION_BOC } from '../constants';
 
 const packPositionData = (
+  poolAddress: Address,
+  owner: Address,
   tickLower: bigint,
   tickUpper: bigint,
-  owner: Address,
-  poolAddress: Address,
 ) => {
   const builder = beginCell();
   storePositionStorage({
@@ -31,13 +31,13 @@ const packPositionData = (
 };
 
 export const computePositionAddress = (
+  poolAddress: Address,
+  owner: Address,
   tickLower: bigint,
   tickUpper: bigint,
-  owner: Address,
-  poolAddress: Address,
   workchain: number = 0,
 ) => {
-  const positionData = packPositionData(tickLower, tickUpper, owner, poolAddress);
+  const positionData = packPositionData(poolAddress, owner, tickLower, tickUpper);
   const stateInitBuilder = beginCell()
     .storeUint(0, 2)
     .storeMaybeRef(Cell.fromBoc(Buffer.from(POSITION_BOC, 'hex'))[0])
