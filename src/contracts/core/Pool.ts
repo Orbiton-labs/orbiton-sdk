@@ -10,16 +10,22 @@ import {
   SendMode,
 } from '@ton/core';
 import { crc32 } from '../../utils/crc32';
-import { InMsgBody, storeInMsgBody } from '../../tlbs/pool';
-import { ValueOps } from '..';
+import {
+  InMsgBody,
+  loadPoolStorage,
+  loadTickInfo,
+  PoolStorage,
+  storeInMsgBody,
+  TickInfo,
+} from '../../tlbs/pool';
 
 namespace PoolWrapper {
   export const Opcodes = {
     Mint: crc32('op::mint'),
     Swap: crc32('op::swap'),
     Burn: crc32('op::burn'),
+
     CallBackLiquidity: crc32('op::cb_add_liquidity'),
-    CallBackMintPosition: crc32('op::cb_mint_position'),
     CallbackCollect: crc32('op::cb_collect'),
   };
 
@@ -37,7 +43,7 @@ namespace PoolWrapper {
     maxLiquidity?: bigint;
   }
 
-  export class Pool implements Contract {
+  export class PoolTest implements Contract {
     static workchain = 0;
 
     constructor(
@@ -46,11 +52,11 @@ namespace PoolWrapper {
     ) {}
 
     static setWorkchain(workchain: number) {
-      Pool.workchain = workchain;
+      PoolTest.workchain = workchain;
     }
 
     static createFromAddress(address: Address) {
-      return new Pool(address);
+      return new PoolTest(address);
     }
 
     static create(code: Cell, initMsg: InstantiateMsg) {
@@ -86,7 +92,7 @@ namespace PoolWrapper {
         )
         .endCell();
       const init = { code, data };
-      return new Pool(contractAddress(Pool.workchain, init), init);
+      return new PoolTest(contractAddress(PoolTest.workchain, init), init);
     }
 
     async sendDeploy(provider: ContractProvider, via: Sender, value: bigint) {
@@ -107,6 +113,29 @@ namespace PoolWrapper {
       });
     }
 
+    async getTicks(provider: ContractProvider): Promise<[number, TickInfo][]> {
+      const poolState = await this.getPoolState(provider);
+      const ticks = poolState.third_ref.ticks;
+      const allParsedTicksAndTick: [number, TickInfo][] = [];
+      ticks.keys().forEach((key: any) => {
+        const tick = ticks.get(key);
+        if (tick) {
+          allParsedTicksAndTick.push([key, tick]);
+        }
+      });
+      return allParsedTicksAndTick;
+    }
+
+    async getPoolState(provider: ContractProvider): Promise<PoolStorage> {
+      const storage = await provider.getState();
+      if (storage.state.type === 'active') {
+        return loadPoolStorage(
+          Cell.fromBoc(Buffer.from(storage.state.data ?? Buffer.from([])))[0].beginParse(),
+        );
+      }
+      throw new Error('Position is not active');
+    }
+
     async getJettonsWallet(provider: ContractProvider): Promise<Address[]> {
       const result = await provider.get('get_jettons_wallet', []);
       const tuple = result.stack;
@@ -119,6 +148,7 @@ namespace PoolWrapper {
       }
       return data;
     }
+
     async getCollectedFees(provider: ContractProvider): Promise<bigint[]> {
       const result = await provider.get('get_collected_fees', []);
       const tuple = result.stack;
@@ -177,29 +207,6 @@ namespace PoolWrapper {
       return result.stack.readAddress();
     }
 
-    async getBatchTickIndex(provider: ContractProvider, tick: bigint): Promise<bigint> {
-      const result = await provider.get('get_batch_tick_index', [
-        {
-          type: 'int',
-          value: tick,
-        },
-      ]);
-      return result.stack.readBigNumber();
-    }
-
-    async getBatchTickAddress(
-      provider: ContractProvider,
-      batchTickIndex: bigint,
-    ): Promise<Address> {
-      const result = await provider.get('get_calculate_batch_tick_address', [
-        {
-          type: 'int',
-          value: batchTickIndex,
-        },
-      ]);
-      return result.stack.readAddress();
-    }
-
     async getPositionAddress(
       provider: ContractProvider,
       tick_lower: bigint,
@@ -239,6 +246,27 @@ namespace PoolWrapper {
       const feeGrowthGlobal1X128 = result.stack.readBigNumber();
 
       return { feeGrowthGlobal0X128, feeGrowthGlobal1X128 };
+    }
+
+    async getTickInfo(provider: ContractProvider, tick: bigint): Promise<TickInfo> {
+      const result = await provider.get('get_tick_info_raw', [
+        {
+          type: 'int',
+          value: tick,
+        },
+      ]);
+      const infoRaw = result.stack.readCellOpt();
+      if (!infoRaw) {
+        return {
+          kind: 'TickInfo',
+          liquidity_gross: 0n,
+          liquidity_net: 0n,
+          fee_growth_outside_0_x128: 0n,
+          fee_growth_outside_1_x128: 0n,
+          initialized: false,
+        };
+      }
+      return loadTickInfo(infoRaw.beginParse());
     }
   }
 }

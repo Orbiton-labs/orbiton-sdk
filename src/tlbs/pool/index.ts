@@ -173,26 +173,6 @@ export interface PoolSecond {
 }
 
 /*
-tick#_ 
-  liquidity_gross:uint128 
-  liquidity_net:int128 
-  fee_growth_outside_0_x128:uint256 
-  fee_growth_outside_1_x128:uint256 
-  tick_cumulative_outside:int56 
-  initialized:Bool = TickInfo;
-*/
-
-export interface TickInfo {
-  readonly kind: 'TickInfo';
-  readonly liquidity_gross: bigint;
-  readonly liquidity_net: bigint;
-  readonly fee_growth_outside_0_x128: bigint;
-  readonly fee_growth_outside_1_x128: bigint;
-  readonly tick_cumulative_outside: number;
-  readonly initialized: boolean;
-}
-
-/*
 pool_third#_
   max_liquidity_per_tick:uint128
   ticks:^(HashmapE 32 TickInfo)
@@ -330,22 +310,24 @@ export function storePoolSecond(poolSecond: PoolSecond): (builder: Builder) => v
   };
 }
 
-/*
-tick#_ 
-  liquidity_gross:uint128 
-  liquidity_net:int128 
-  fee_growth_outside_0_x128:uint256 
-  fee_growth_outside_1_x128:uint256 
-  tick_cumulative_outside:int56 
-  initialized:Bool = TickInfo;
-*/
+// tick#_ liquidity_gross:uint128 liquidity_net:int128 fee_growth_outside_0_x128:uint256 fee_growth_outside_1_x128:uint256 tick_cumulative_outside:int56 initialized:Bool = Info;
+
+export interface TickInfo {
+  readonly kind: 'TickInfo';
+  readonly liquidity_gross: bigint;
+  readonly liquidity_net: bigint;
+  readonly fee_growth_outside_0_x128: bigint;
+  readonly fee_growth_outside_1_x128: bigint;
+  readonly initialized: boolean;
+}
+
+// tick#_ liquidity_gross:uint128 liquidity_net:int128 fee_growth_outside_0_x128:uint256 fee_growth_outside_1_x128:uint256 tick_cumulative_outside:int56 initialized:Bool = Info;
 
 export function loadTickInfo(slice: Slice): TickInfo {
   let liquidity_gross: bigint = slice.loadUintBig(128);
   let liquidity_net: bigint = slice.loadIntBig(128);
   let fee_growth_outside_0_x128: bigint = slice.loadUintBig(256);
   let fee_growth_outside_1_x128: bigint = slice.loadUintBig(256);
-  let tick_cumulative_outside: number = slice.loadInt(56);
   let initialized: boolean = slice.loadBoolean();
   return {
     kind: 'TickInfo',
@@ -353,19 +335,17 @@ export function loadTickInfo(slice: Slice): TickInfo {
     liquidity_net: liquidity_net,
     fee_growth_outside_0_x128: fee_growth_outside_0_x128,
     fee_growth_outside_1_x128: fee_growth_outside_1_x128,
-    tick_cumulative_outside: tick_cumulative_outside,
     initialized: initialized,
   };
 }
 
-export function storeTickInfo(tickInfo: TickInfo): (builder: Builder) => void {
+export function storeTickInfo(info: TickInfo): (builder: Builder) => void {
   return (builder: Builder) => {
-    builder.storeUint(tickInfo.liquidity_gross, 128);
-    builder.storeInt(tickInfo.liquidity_net, 128);
-    builder.storeUint(tickInfo.fee_growth_outside_0_x128, 256);
-    builder.storeUint(tickInfo.fee_growth_outside_1_x128, 256);
-    builder.storeInt(tickInfo.tick_cumulative_outside, 56);
-    builder.storeBit(tickInfo.initialized);
+    builder.storeUint(info.liquidity_gross, 128);
+    builder.storeInt(info.liquidity_net, 128);
+    builder.storeUint(info.fee_growth_outside_0_x128, 256);
+    builder.storeUint(info.fee_growth_outside_1_x128, 256);
+    builder.storeBit(info.initialized);
   };
 }
 
