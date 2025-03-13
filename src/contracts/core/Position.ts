@@ -12,6 +12,7 @@ import {
 
 namespace PositionWrapper {
   export const Opcodes = {
+    MintPosition: crc32('op::mint_position'),
     BurnPosition: crc32('op::burn_position'),
     Collect: crc32('op::collect'),
     CallBackPoolBurn: crc32('op::cb_pool_burn'),
