@@ -43,7 +43,7 @@ namespace PoolWrapper {
     maxLiquidity?: bigint;
   }
 
-  export class PoolTest implements Contract {
+  export class Pool implements Contract {
     static workchain = 0;
 
     constructor(
@@ -52,11 +52,11 @@ namespace PoolWrapper {
     ) {}
 
     static setWorkchain(workchain: number) {
-      PoolTest.workchain = workchain;
+      Pool.workchain = workchain;
     }
 
     static createFromAddress(address: Address) {
-      return new PoolTest(address);
+      return new Pool(address);
     }
 
     static create(code: Cell, initMsg: InstantiateMsg) {
@@ -92,7 +92,7 @@ namespace PoolWrapper {
         )
         .endCell();
       const init = { code, data };
-      return new PoolTest(contractAddress(PoolTest.workchain, init), init);
+      return new Pool(contractAddress(Pool.workchain, init), init);
     }
 
     async sendDeploy(provider: ContractProvider, via: Sender, value: bigint) {
