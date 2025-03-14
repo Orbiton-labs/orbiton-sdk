@@ -1,6 +1,6 @@
 import { Address } from '@ton/core';
 import { computePoolAddress } from './functions/computePoolAddress';
-import { Jetton } from '../build';
+import { Jetton } from '.';
 
 const main = async () => {
   const jetton1 = new Jetton('EQCF8jfV05w00abPcvsW64XNanQ9vateIhCLSkNAQ7Qfo-WW', 9, 'USDC');

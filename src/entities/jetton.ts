@@ -47,7 +47,7 @@ export class Jetton extends AbstractJetton {
   public sortsBefore(other: Jetton): boolean {
     invariant(this?.walletAddress, 'X: WALLET_ADDRESS');
     invariant(other?.walletAddress, 'Y: WALLET_ADDRESS');
-    invariant(this.address !== other.address, 'ADDRESSES');
+    invariant(this.walletAddress !== other.walletAddress, 'ADDRESSES');
     return (
       BigInt(`0x${beginCell().storeAddress(this.walletAddress).endCell().hash().toString('hex')}`) <
       BigInt(`0x${beginCell().storeAddress(other.walletAddress).endCell().hash().toString('hex')}`)
