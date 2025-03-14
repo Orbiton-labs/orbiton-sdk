@@ -1,9 +1,7 @@
 import { MaxUint256 } from '@pancakeswap/swap-sdk-core';
 import invariant from 'tiny-invariant';
-import { ONE, ZERO, Q96 } from '../constants';
+import { ONE, ZERO, Q96, MaxUint160 } from '../constants';
 import { FullMath } from './fullMath';
-
-const MaxUint160 = 2n ** 160n - ONE;
 
 function multiplyIn256(x: bigint, y: bigint): bigint {
   const product = x * y;
