@@ -1,15 +1,23 @@
-import { Address } from '@ton/core';
-import { computePoolAddress } from './functions/computePoolAddress';
-import { Jetton } from '.';
+import { getHttpEndpoint } from '@orbs-network/ton-access';
+import { Address, OpenedContract } from '@ton/core';
+import { TonClient } from '@ton/ton';
+import { PoolWrapper } from './contracts';
+
+const poolAddr = 'EQCtpowhg8efNm364J51zDiKNT_CNnApUU-bor5Jpd7HzhR3';
 
 const main = async () => {
-  const jetton1 = new Jetton('EQCF8jfV05w00abPcvsW64XNanQ9vateIhCLSkNAQ7Qfo-WW', 9, 'USDC');
-  const jetton2 = new Jetton('EQCqaCb9S8wqYjPT1d18Z0f-HemRnEDm4heFyNfPKMESAIjQ', 6, 'Orbiton Swap');
-
-  console.log({
-    jetton1,
-    jetton2,
+  const client = new TonClient({
+    endpoint: await getHttpEndpoint({
+      network: 'testnet',
+    }),
   });
+  const poolContract = new PoolWrapper.Pool(Address.parse(poolAddr));
+  const pool = client.open(poolContract) as OpenedContract<PoolWrapper.Pool>;
+  const ticksInfo = await pool.getTicks().catch((err) => {
+    console.log(err);
+    return null;
+  });
+  console.log(ticksInfo);
 };
 
-main();
+main().catch((er) => console.log(er));

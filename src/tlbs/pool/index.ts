@@ -173,9 +173,27 @@ export interface PoolSecond {
 }
 
 /*
+tick#_ 
+  liquidity_gross:uint128 
+  liquidity_net:int128 
+  fee_growth_outside_0_x128:uint256 
+  fee_growth_outside_1_x128:uint256  
+  initialized:Bool = TickInfo;
+*/
+
+export interface TickInfo {
+  readonly kind: 'TickInfo';
+  readonly liquidity_gross: bigint;
+  readonly liquidity_net: bigint;
+  readonly fee_growth_outside_0_x128: bigint;
+  readonly fee_growth_outside_1_x128: bigint;
+  readonly initialized: boolean;
+}
+
+/*
 pool_third#_
   max_liquidity_per_tick:uint128
-  ticks:^(HashmapE 32 TickInfo)
+  ticks:(HashmapE 24 TickInfo)
   position_code:^Cell
   lp_account_code:^Cell
   = PoolThird;
@@ -310,18 +328,14 @@ export function storePoolSecond(poolSecond: PoolSecond): (builder: Builder) => v
   };
 }
 
-// tick#_ liquidity_gross:uint128 liquidity_net:int128 fee_growth_outside_0_x128:uint256 fee_growth_outside_1_x128:uint256 tick_cumulative_outside:int56 initialized:Bool = Info;
-
-export interface TickInfo {
-  readonly kind: 'TickInfo';
-  readonly liquidity_gross: bigint;
-  readonly liquidity_net: bigint;
-  readonly fee_growth_outside_0_x128: bigint;
-  readonly fee_growth_outside_1_x128: bigint;
-  readonly initialized: boolean;
-}
-
-// tick#_ liquidity_gross:uint128 liquidity_net:int128 fee_growth_outside_0_x128:uint256 fee_growth_outside_1_x128:uint256 tick_cumulative_outside:int56 initialized:Bool = Info;
+/*
+tick#_ 
+  liquidity_gross:uint128 
+  liquidity_net:int128 
+  fee_growth_outside_0_x128:uint256 
+  fee_growth_outside_1_x128:uint256  
+  initialized:Bool = TickInfo;
+*/
 
 export function loadTickInfo(slice: Slice): TickInfo {
   let liquidity_gross: bigint = slice.loadUintBig(128);
@@ -339,20 +353,20 @@ export function loadTickInfo(slice: Slice): TickInfo {
   };
 }
 
-export function storeTickInfo(info: TickInfo): (builder: Builder) => void {
+export function storeTickInfo(tickInfo: TickInfo): (builder: Builder) => void {
   return (builder: Builder) => {
-    builder.storeUint(info.liquidity_gross, 128);
-    builder.storeInt(info.liquidity_net, 128);
-    builder.storeUint(info.fee_growth_outside_0_x128, 256);
-    builder.storeUint(info.fee_growth_outside_1_x128, 256);
-    builder.storeBit(info.initialized);
+    builder.storeUint(tickInfo.liquidity_gross, 128);
+    builder.storeInt(tickInfo.liquidity_net, 128);
+    builder.storeUint(tickInfo.fee_growth_outside_0_x128, 256);
+    builder.storeUint(tickInfo.fee_growth_outside_1_x128, 256);
+    builder.storeBit(tickInfo.initialized);
   };
 }
 
 /*
 pool_third#_
   max_liquidity_per_tick:uint128
-  ticks:^(HashmapE 32 TickInfo)
+  ticks:(HashmapE 24 TickInfo)
   position_code:^Cell
   lp_account_code:^Cell
   = PoolThird;
@@ -360,21 +374,20 @@ pool_third#_
 
 export function loadPoolThird(slice: Slice): PoolThird {
   let max_liquidity_per_tick: bigint = slice.loadUintBig(128);
-  let slice1 = slice.loadRef().beginParse(true);
   let ticks: Dictionary<number, TickInfo> = Dictionary.load(
-    Dictionary.Keys.Uint(32),
+    Dictionary.Keys.Int(24),
     {
       serialize: () => {
         throw new Error('Not implemented');
       },
       parse: loadTickInfo,
     },
-    slice1,
+    slice,
   );
+  let slice1 = slice.loadRef().beginParse(true);
+  let position_code: Cell = slice1.asCell();
   let slice2 = slice.loadRef().beginParse(true);
-  let position_code: Cell = slice2.asCell();
-  let slice3 = slice.loadRef().beginParse(true);
-  let lp_account_code: Cell = slice3.asCell();
+  let lp_account_code: Cell = slice2.asCell();
   return {
     kind: 'PoolThird',
     max_liquidity_per_tick: max_liquidity_per_tick,
@@ -387,8 +400,7 @@ export function loadPoolThird(slice: Slice): PoolThird {
 export function storePoolThird(poolThird: PoolThird): (builder: Builder) => void {
   return (builder: Builder) => {
     builder.storeUint(poolThird.max_liquidity_per_tick, 128);
-    let cell1 = beginCell();
-    cell1.storeDict(poolThird.ticks, Dictionary.Keys.Uint(32), {
+    builder.storeDict(poolThird.ticks, Dictionary.Keys.Int(24), {
       serialize: (arg: TickInfo, builder: Builder) => {
         storeTickInfo(arg)(builder);
       },
@@ -396,12 +408,11 @@ export function storePoolThird(poolThird: PoolThird): (builder: Builder) => void
         throw new Error('Not implemented');
       },
     });
+    let cell1 = beginCell();
+    cell1.storeSlice(poolThird.position_code.beginParse(true));
     builder.storeRef(cell1);
     let cell2 = beginCell();
-    cell2.storeSlice(poolThird.position_code.beginParse(true));
+    cell2.storeSlice(poolThird.lp_account_code.beginParse(true));
     builder.storeRef(cell2);
-    let cell3 = beginCell();
-    cell3.storeSlice(poolThird.lp_account_code.beginParse(true));
-    builder.storeRef(cell3);
   };
 }
