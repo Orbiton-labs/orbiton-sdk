@@ -1,4 +1,5 @@
-import { BigintIsh, Rounding } from '../constants';
+import { BigintIsh } from '../@types';
+import { Rounding } from '../enums';
 import { Fraction } from './fraction';
 
 const ONE_HUNDRED = new Fraction(100n);

@@ -1,8 +1,8 @@
-import { Percent } from '../fractions/percent';
+import { Percent } from '../entities/percent';
 
-export type BigintIsh = bigint | number | string;
 export const MINIMUM_LIQUIDITY = 1000n;
 // exports for internal consumption
+export const NEGATIVE_ONE = -1n;
 export const ZERO = 0n;
 export const ONE = 1n;
 export const TWO = 2n;
@@ -12,6 +12,8 @@ export const TEN = 10n;
 export const MaxUint256 = BigInt(
   '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
 );
+export const MaxUint160 = BigInt('0xffffffffffffffffffffffffffffffffffffffff');
+
 // used in liquidity amount math
 export const Q96 = 2n ** 96n;
 export const Q192 = Q96 ** 2n;
