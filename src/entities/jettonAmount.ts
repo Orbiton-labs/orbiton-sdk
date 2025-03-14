@@ -6,7 +6,7 @@ import { MaxUint256 } from '../constants';
 import { Rounding } from '../enums';
 import { Jetton } from './jetton';
 import { BigintIsh } from '../@types';
-import { Fraction } from '.';
+import { Fraction } from './fraction';
 
 const Big = toFormat(_Big);
 

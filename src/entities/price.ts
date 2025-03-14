@@ -1,6 +1,6 @@
 import invariant from 'tiny-invariant';
 import { BigintIsh } from '../@types';
-import { Fraction } from '.';
+import { Fraction } from './fraction';
 import { Rounding } from '../enums/rounding';
 import { Jetton } from './jetton';
 import { JettonAmount } from './jettonAmount';

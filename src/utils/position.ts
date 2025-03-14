@@ -1,4 +1,4 @@
-import { subIn256 } from '.';
+import { subIn256 } from '../utils';
 import { Q128 } from '../constants';
 
 export abstract class PositionLibrary {
