@@ -33,6 +33,8 @@
     "big.js": "^6.2.2",
     "bignumber.js": "^9.1.2",
     "decimal.js": "^10.4.3",
-    "tiny-invariant": "^1.3.3"
+    "decimal.js-light": "^2.5.1",
+    "tiny-invariant": "^1.3.3",
+    "toformat": "^2.0.0"
   }
 }

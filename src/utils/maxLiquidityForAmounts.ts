@@ -1,4 +1,4 @@
-import { BigintIsh } from '@pancakeswap/sdk';
+import { BigintIsh } from '../@types';
 import { Q96 } from '../constants';
 
 /**

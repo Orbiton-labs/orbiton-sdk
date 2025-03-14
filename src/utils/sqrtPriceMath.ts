@@ -1,4 +1,4 @@
-import { MaxUint256 } from '@pancakeswap/swap-sdk-core';
+import { MaxUint256 } from '../constants';
 import invariant from 'tiny-invariant';
 import { ONE, ZERO, Q96, MaxUint160 } from '../constants';
 import { FullMath } from './fullMath';
