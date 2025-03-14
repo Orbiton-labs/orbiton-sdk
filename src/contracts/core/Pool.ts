@@ -170,8 +170,11 @@ namespace PoolWrapper {
       return [feeGrowth0Global, feeGrowth1Global];
     }
 
-    async getFeesGrowthGlobalAtTick(provider: ContractProvider, tickId: bigint): Promise<bigint[]> {
-      const result = await provider.get('get_fee_growth_global_at_tick', [
+    async getFeesGrowthOutsideAtTick(
+      provider: ContractProvider,
+      tickId: bigint,
+    ): Promise<[bigint, bigint, boolean]> {
+      const result = await provider.get('get_fee_growth_outside_at_tick', [
         {
           type: 'int',
           value: tickId,
@@ -180,7 +183,8 @@ namespace PoolWrapper {
       const tuple = result.stack;
       const feeGrowth0Global = tuple.readBigNumber();
       const feeGrowth1Global = tuple.readBigNumber();
-      return [feeGrowth0Global, feeGrowth1Global];
+      const existed = tuple.readBoolean();
+      return [feeGrowth0Global, feeGrowth1Global, existed];
     }
 
     async getLpAccountAddress(
