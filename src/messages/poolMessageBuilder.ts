@@ -56,6 +56,8 @@ export class PoolMessageBuilder {
 
   public static createMintMessage(
     routerAddress: Address,
+    jetton0Router: Jetton,
+    jetton1Router: Jetton,
     jetton0Amount: JettonAmount<Jetton>,
     jetton1Amount: JettonAmount<Jetton>,
     tickSpacing: number,
@@ -65,7 +67,12 @@ export class PoolMessageBuilder {
     liquidity: bigint,
     responseAddress: Address,
   ): SenderArguments[] {
-    if (!jetton1Amount.jetton.walletAddress || !jetton0Amount.jetton.walletAddress) {
+    if (
+      !jetton1Amount.jetton.walletAddress ||
+      !jetton0Amount.jetton.walletAddress ||
+      !jetton1Router.walletAddress ||
+      !jetton0Router.walletAddress
+    ) {
       throw new Error('Router wallet address is not set on jetton1 or jetton0');
     }
 
@@ -82,7 +89,7 @@ export class PoolMessageBuilder {
       mint: {
         kind: 'MintParams',
         forward_opcode: PoolWrapper.Opcodes.Mint,
-        jetton1_wallet: jetton1Amount.jetton.walletAddress,
+        jetton1_wallet: jetton1Router.walletAddress,
         tick_lower: Number(tickLower),
         tick_upper: Number(tickUpper),
         fee,
@@ -109,7 +116,7 @@ export class PoolMessageBuilder {
       mint: {
         kind: 'MintParams',
         forward_opcode: PoolWrapper.Opcodes.Mint,
-        jetton1_wallet: jetton0Amount.jetton.walletAddress,
+        jetton1_wallet: jetton1Router.walletAddress,
         tick_lower: Number(tickLower),
         tick_upper: Number(tickUpper),
         fee,
@@ -130,6 +137,8 @@ export class PoolMessageBuilder {
     walletVersion: WalletVersion,
     senderAddress: Address,
     routerAddress: Address,
+    jetton0Router: Jetton,
+    jetton1Router: Jetton,
     jetton0Amount: JettonAmount<Jetton>,
     jetton1Amount: JettonAmount<Jetton>,
     tickSpacing: number,
@@ -142,6 +151,8 @@ export class PoolMessageBuilder {
   ) {
     const messages = this.createMintMessage(
       routerAddress,
+      jetton0Router,
+      jetton1Router,
       jetton0Amount,
       jetton1Amount,
       tickSpacing,
