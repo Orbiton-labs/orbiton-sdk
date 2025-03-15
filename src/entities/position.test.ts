@@ -341,168 +341,168 @@ describe('Position', () => {
     });
   });
 
-  // describe('#burnAmountsWithSlippage', () => {
-  //   describe('0 slippage', () => {
-  //     const slippageTolerance = new Percent(0);
+  describe('#burnAmountsWithSlippage', () => {
+    describe('0 slippage', () => {
+      const slippageTolerance = new Percent(0);
 
-  //     it('is correct for positions below', () => {
-  //       const position = new Position({
-  //         pool: ORB_USDC_POOL,
-  //         liquidity: 100e18,
-  //         tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING,
-  //         tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING * 2,
-  //       });
+      it('is correct for positions below', () => {
+        const position = new Position({
+          pool: ORB_USDC_POOL,
+          liquidity: 100e18,
+          tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING,
+          tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING * 2,
+        });
 
-  //       const { amount0, amount1 } = position.burnAmountsWithSlippage(slippageTolerance);
-  //       expect(amount0.toString()).toEqual('49949961958869841754181');
-  //       expect(amount1.toString()).toEqual('0');
-  //     });
+        const { amount0, amount1 } = position.burnAmountsWithSlippage(slippageTolerance);
+        expect(amount0.toString()).toEqual('49949961958869841754181');
+        expect(amount1.toString()).toEqual('0');
+      });
 
-  //     it('is correct for positions above', () => {
-  //       const position = new Position({
-  //         pool: ORB_USDC_POOL,
-  //         liquidity: 100e18,
-  //         tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) - TICK_SPACING * 2,
-  //         tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) - TICK_SPACING,
-  //       });
+      it('is correct for positions above', () => {
+        const position = new Position({
+          pool: ORB_USDC_POOL,
+          liquidity: 100e18,
+          tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) - TICK_SPACING * 2,
+          tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) - TICK_SPACING,
+        });
 
-  //       const { amount0, amount1 } = position.burnAmountsWithSlippage(slippageTolerance);
-  //       expect(amount0.toString()).toEqual('0');
-  //       expect(amount1.toString()).toEqual('49970077052');
-  //     });
+        const { amount0, amount1 } = position.burnAmountsWithSlippage(slippageTolerance);
+        expect(amount0.toString()).toEqual('0');
+        expect(amount1.toString()).toEqual('49970077052');
+      });
 
-  //     it('is correct for positions within', () => {
-  //       const position = new Position({
-  //         pool: ORB_USDC_POOL,
-  //         liquidity: 100e18,
-  //         tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) - TICK_SPACING * 2,
-  //         tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING * 2,
-  //       });
+      it('is correct for positions within', () => {
+        const position = new Position({
+          pool: ORB_USDC_POOL,
+          liquidity: 100e18,
+          tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) - TICK_SPACING * 2,
+          tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING * 2,
+        });
 
-  //       const { amount0, amount1 } = position.burnAmountsWithSlippage(slippageTolerance);
-  //       expect(amount0.toString()).toEqual('120054069145287995769396');
-  //       expect(amount1.toString()).toEqual('79831926242');
-  //     });
-  //   });
+        const { amount0, amount1 } = position.burnAmountsWithSlippage(slippageTolerance);
+        expect(amount0.toString()).toEqual('120054069145287995769396');
+        expect(amount1.toString()).toEqual('79831926242');
+      });
+    });
 
-  //   describe('.05% slippage', () => {
-  //     const slippageTolerance = new Percent(5, 10000);
+    describe('.05% slippage', () => {
+      const slippageTolerance = new Percent(5, 10000);
 
-  //     it('is correct for positions below', () => {
-  //       const position = new Position({
-  //         pool: ORB_USDC_POOL,
-  //         liquidity: 100e18,
-  //         tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING,
-  //         tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING * 2,
-  //       });
-  //       const { amount0, amount1 } = position.burnAmountsWithSlippage(slippageTolerance);
-  //       expect(amount0.toString()).toEqual('49949961958869841754181');
-  //       expect(amount1.toString()).toEqual('0');
-  //     });
+      it('is correct for positions below', () => {
+        const position = new Position({
+          pool: ORB_USDC_POOL,
+          liquidity: 100e18,
+          tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING,
+          tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING * 2,
+        });
+        const { amount0, amount1 } = position.burnAmountsWithSlippage(slippageTolerance);
+        expect(amount0.toString()).toEqual('49949961958869841754181');
+        expect(amount1.toString()).toEqual('0');
+      });
 
-  //     it('is correct for positions above', () => {
-  //       const position = new Position({
-  //         pool: ORB_USDC_POOL,
-  //         liquidity: 100e18,
-  //         tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) - TICK_SPACING * 2,
-  //         tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) - TICK_SPACING,
-  //       });
-  //       const { amount0, amount1 } = position.burnAmountsWithSlippage(slippageTolerance);
-  //       expect(amount0.toString()).toEqual('0');
-  //       expect(amount1.toString()).toEqual('49970077052');
-  //     });
+      it('is correct for positions above', () => {
+        const position = new Position({
+          pool: ORB_USDC_POOL,
+          liquidity: 100e18,
+          tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) - TICK_SPACING * 2,
+          tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) - TICK_SPACING,
+        });
+        const { amount0, amount1 } = position.burnAmountsWithSlippage(slippageTolerance);
+        expect(amount0.toString()).toEqual('0');
+        expect(amount1.toString()).toEqual('49970077052');
+      });
 
-  //     it('is correct for positions within', () => {
-  //       const position = new Position({
-  //         pool: ORB_USDC_POOL,
-  //         liquidity: 100e18,
-  //         tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) - TICK_SPACING * 2,
-  //         tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING * 2,
-  //       });
-  //       const { amount0, amount1 } = position.burnAmountsWithSlippage(slippageTolerance);
-  //       expect(amount0.toString()).toEqual('95063440240746211454822');
-  //       expect(amount1.toString()).toEqual('54828800460');
-  //     });
-  //   });
+      it('is correct for positions within', () => {
+        const position = new Position({
+          pool: ORB_USDC_POOL,
+          liquidity: 100e18,
+          tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) - TICK_SPACING * 2,
+          tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING * 2,
+        });
+        const { amount0, amount1 } = position.burnAmountsWithSlippage(slippageTolerance);
+        expect(amount0.toString()).toEqual('95063440240746211454822');
+        expect(amount1.toString()).toEqual('54828800460');
+      });
+    });
 
-  //   describe('5% slippage tolerance', () => {
-  //     const slippageTolerance = new Percent(5, 100);
+    describe('5% slippage tolerance', () => {
+      const slippageTolerance = new Percent(5, 100);
 
-  //     it('is correct for pool at min price', () => {
-  //       const position = new Position({
-  //         pool: new Pool(
-  //           orb,
-  //           usdc,
-  //           FeeAmount.LOW,
-  //           TickMath.MIN_SQRT_RATIO,
-  //           0,
-  //           TickMath.MIN_TICK,
-  //           TICK_SPACINGS[FeeAmount.LOW],
-  //         ),
-  //         liquidity: 100e18,
-  //         tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING,
-  //         tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING * 2,
-  //       });
+      it('is correct for pool at min price', () => {
+        const position = new Position({
+          pool: new Pool(
+            orb,
+            usdc,
+            FeeAmount.LOW,
+            TickMath.MIN_SQRT_RATIO,
+            0,
+            TickMath.MIN_TICK,
+            TICK_SPACINGS[FeeAmount.LOW],
+          ),
+          liquidity: 100e18,
+          tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING,
+          tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING * 2,
+        });
 
-  //       const { amount0, amount1 } = position.mintAmountsWithSlippage(slippageTolerance);
-  //       expect(amount0.toString()).toEqual('49949961958869841738198');
-  //       expect(amount1.toString()).toEqual('0');
-  //     });
+        const { amount0, amount1 } = position.mintAmountsWithSlippage(slippageTolerance);
+        expect(amount0.toString()).toEqual('49949961958869841738198');
+        expect(amount1.toString()).toEqual('0');
+      });
 
-  //     it('is correct for pool at max price', () => {
-  //       const position = new Position({
-  //         pool: new Pool(
-  //           orb,
-  //           usdc,
-  //           FeeAmount.LOW,
-  //           TickMath.MAX_SQRT_RATIO - 1n,
-  //           0,
-  //           TickMath.MAX_TICK - 1,
-  //           TICK_SPACINGS[FeeAmount.LOW],
-  //         ),
-  //         liquidity: 100e18,
-  //         tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING,
-  //         tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING * 2,
-  //       });
+      it('is correct for pool at max price', () => {
+        const position = new Position({
+          pool: new Pool(
+            orb,
+            usdc,
+            FeeAmount.LOW,
+            TickMath.MAX_SQRT_RATIO - 1n,
+            0,
+            TickMath.MAX_TICK - 1,
+            TICK_SPACINGS[FeeAmount.LOW],
+          ),
+          liquidity: 100e18,
+          tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING,
+          tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING * 2,
+        });
 
-  //       const { amount0, amount1 } = position.mintAmountsWithSlippage(slippageTolerance);
-  //       expect(amount0.toString()).toEqual('0');
-  //       expect(amount1.toString()).toEqual('50045084660');
-  //     });
-  //   });
-  // });
+        const { amount0, amount1 } = position.mintAmountsWithSlippage(slippageTolerance);
+        expect(amount0.toString()).toEqual('0');
+        expect(amount1.toString()).toEqual('50045084660');
+      });
+    });
+  });
 
-  // describe('#mintAmounts', () => {
-  //   it('is correct for price above', () => {
-  //     const { amount0, amount1 } = new Position({
-  //       pool: ORB_USDC_POOL,
-  //       liquidity: 100e18,
-  //       tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING,
-  //       tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING * 2,
-  //     }).mintAmounts;
-  //     expect(amount0.toString()).toEqual('49949961958869841754182');
-  //     expect(amount1.toString()).toEqual('0');
-  //   });
-  //   it('is correct for price below', () => {
-  //     const { amount0, amount1 } = new Position({
-  //       pool: ORB_USDC_POOL,
-  //       liquidity: 100e18,
-  //       tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) - TICK_SPACING * 2,
-  //       tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) - TICK_SPACING,
-  //     }).mintAmounts;
-  //     expect(amount0.toString()).toEqual('0');
-  //     expect(amount1.toString()).toEqual('49970077053');
-  //   });
-  //   it('is correct for in-range position', () => {
-  //     const { amount0, amount1 } = new Position({
-  //       pool: ORB_USDC_POOL,
-  //       liquidity: 100e18,
-  //       tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) - TICK_SPACING * 2,
-  //       tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING * 2,
-  //     }).mintAmounts;
-  //     // note these are rounded up
-  //     expect(amount0.toString()).toEqual('120054069145287995769397');
-  //     expect(amount1.toString()).toEqual('79831926243');
-  //   });
-  // });
+  describe('#mintAmounts', () => {
+    it('is correct for price above', () => {
+      const { amount0, amount1 } = new Position({
+        pool: ORB_USDC_POOL,
+        liquidity: 100e18,
+        tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING,
+        tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING * 2,
+      }).mintAmounts;
+      expect(amount0.toString()).toEqual('49949961958869841754182');
+      expect(amount1.toString()).toEqual('0');
+    });
+    it('is correct for price below', () => {
+      const { amount0, amount1 } = new Position({
+        pool: ORB_USDC_POOL,
+        liquidity: 100e18,
+        tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) - TICK_SPACING * 2,
+        tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) - TICK_SPACING,
+      }).mintAmounts;
+      expect(amount0.toString()).toEqual('0');
+      expect(amount1.toString()).toEqual('49970077053');
+    });
+    it('is correct for in-range position', () => {
+      const { amount0, amount1 } = new Position({
+        pool: ORB_USDC_POOL,
+        liquidity: 100e18,
+        tickLower: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) - TICK_SPACING * 2,
+        tickUpper: nearestUsableTick(POOL_TICK_CURRENT, TICK_SPACING) + TICK_SPACING * 2,
+      }).mintAmounts;
+      // note these are rounded up
+      expect(amount0.toString()).toEqual('120054069145287995769397');
+      expect(amount1.toString()).toEqual('79831926243');
+    });
+  });
 });
