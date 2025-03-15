@@ -15,11 +15,44 @@ import { Jetton, JettonAmount } from '../entities';
 import { PoolWrapper, WalletContract } from '../contracts';
 import { storeOpJettonTransferMint, storeOpJettonTransferSwap } from '../tlbs/jetton';
 import { WalletVersion } from '../@types';
+import { storeOpCreatePool } from '../tlbs/router';
 export class PoolMessageBuilder {
   public static gasUsage = {
+    CREATE_POOL: toNano(0.1),
     MINT_GAS: toNano(0.5),
     SWAP_GAS: toNano(1.2),
   };
+
+  public static createCreatePoolMessage(
+    routerAddress: Address,
+    jetton0: Jetton,
+    jetton1: Jetton,
+    tickSpacing: number,
+    fee: number,
+    sqrtPriceX96: bigint,
+  ): SenderArguments[] {
+    if (!jetton0.walletAddress || !jetton1.walletAddress) {
+      throw new Error('Router wallet address is not set on jetton1 or jetton0');
+    }
+
+    const routerPayloadBuilder = beginCell();
+    storeOpCreatePool({
+      kind: 'OpCreatePool',
+      query_id: 0,
+      jetton0_wallet: jetton0.walletAddress,
+      jetton1_wallet: jetton1.walletAddress,
+      fee,
+      tick_spacing: tickSpacing,
+      sqrt_price_x96: sqrtPriceX96,
+    })(routerPayloadBuilder);
+    return [
+      {
+        to: routerAddress,
+        value: this.gasUsage.CREATE_POOL,
+        body: routerPayloadBuilder.endCell(),
+      },
+    ];
+  }
 
   public static createMintMessage(
     routerAddress: Address,
