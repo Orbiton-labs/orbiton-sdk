@@ -1,6 +1,6 @@
 {
   "name": "@orbiton_labs/v3-contracts-sdk",
-  "version": "1.1.20",
+  "version": "1.1.21",
   "main": "build/index.js",
   "files": [
     "build"
@@ -14,7 +14,7 @@
     "@orbs-network/ton-access": "^2.3.3",
     "@ton-community/tlb-codegen": "^1.1.0",
     "@ton/blueprint": "^0.24.0",
-    "@ton/core": "~0",
+    "@ton/core": "^0.59.0",
     "@ton/crypto": "^3.3.0",
     "@ton/sandbox": "^0.22.0",
     "@ton/test-utils": "^0.4.2",

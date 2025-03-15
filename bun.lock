@@ -16,7 +16,7 @@
         "@orbs-network/ton-access": "^2.3.3",
         "@ton-community/tlb-codegen": "^1.1.0",
         "@ton/blueprint": "^0.24.0",
-        "@ton/core": "~0",
+        "@ton/core": "^0.59.0",
         "@ton/crypto": "^3.3.0",
         "@ton/sandbox": "^0.22.0",
         "@ton/test-utils": "^0.4.2",
@@ -224,7 +224,7 @@
 
     "@ton/blueprint": ["@ton/blueprint@0.24.0", "", { "dependencies": { "@tact-lang/compiler": "^1.4.0", "@ton-community/func-js": "^0.7.0", "@tonconnect/sdk": "^2.2.0", "arg": "^5.0.2", "chalk": "^4.1.0", "dotenv": "^16.1.4", "inquirer": "^8.2.5", "qrcode-terminal": "^0.12.0", "ts-node": "^10.9.1" }, "peerDependencies": { "@ton/core": ">=0.58.1", "@ton/crypto": ">=3.3.0", "@ton/ton": ">=15.0.0" }, "bin": "./dist/cli/cli.js" }, "sha512-JTYGfkU8ZiSi2XCPJwea2sA7ijGYBHx9OMcyfj01i1F3zpMR3RhTFl1ETgJjBud+2TTNsAUEjteVZhpjnTx32w=="],
 
-    "@ton/core": ["@ton/core@0.56.3", "", { "dependencies": { "symbol.inspect": "1.0.1" }, "peerDependencies": { "@ton/crypto": ">=3.2.0" } }, "sha512-HVkalfqw8zqLLPehtq0CNhu5KjVzc7IrbDwDHPjGoOSXmnqSobiWj8a5F+YuWnZnEbQKtrnMGNOOjVw4LG37rg=="],
+    "@ton/core": ["@ton/core@0.59.1", "", { "dependencies": { "symbol.inspect": "1.0.1" }, "peerDependencies": { "@ton/crypto": ">=3.2.0" } }, "sha512-SxFBAvutYJaIllTkv82vbHTJhJI6NxzqUhi499CDEjJEZ9i6i9lHJiK2df4dlLAb/4SiWX6+QUzESkK4DEdnCw=="],
 
     "@ton/crypto": ["@ton/crypto@3.3.0", "", { "dependencies": { "@ton/crypto-primitives": "2.1.0", "jssha": "3.2.0", "tweetnacl": "1.0.3" } }, "sha512-/A6CYGgA/H36OZ9BbTaGerKtzWp50rg67ZCH2oIjV1NcrBaCK9Z343M+CxedvM7Haf3f/Ee9EhxyeTp0GKMUpA=="],
 

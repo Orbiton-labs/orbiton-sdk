@@ -11,3 +11,4 @@ export * from './tickList';
 export * from './swapMath';
 export * from './nearestUsableTick';
 export * from './priceParser';
+export * from './liquidityMath';

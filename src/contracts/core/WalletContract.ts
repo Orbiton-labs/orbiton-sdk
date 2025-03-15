@@ -26,12 +26,6 @@ interface IWalletContract {
   ): T extends Wallet4SendArgsSignable ? Promise<Cell> : Cell;
 }
 
-export type WalletContracts =
-  | WalletContractV5R1
-  | WalletContractV3R1
-  | WalletContractV3R2
-  | WalletContractV4;
-
 export class WalletContract {
   private constructor() {}
 

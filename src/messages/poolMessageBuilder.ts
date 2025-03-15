@@ -1,8 +1,20 @@
-import { Address, beginCell, Dictionary, SenderArguments, toNano } from '@ton/core';
-import { Jetton, JettonAmount } from '../entities';
-import { PoolWrapper } from '../contracts';
-import { storeOpJettonTransferMint } from '../tlbs/jetton';
 import { TonApiClient } from '@ton-api/client';
+import {
+  Address,
+  beginCell,
+  Dictionary,
+  external,
+  internal,
+  SenderArguments,
+  SendMode,
+  storeMessage,
+  toNano,
+} from '@ton/core';
+import { mnemonicNew, mnemonicToPrivateKey } from '@ton/crypto';
+import { Jetton, JettonAmount } from '../entities';
+import { PoolWrapper, WalletContract } from '../contracts';
+import { storeOpJettonTransferMint } from '../tlbs/jetton';
+import { WalletVersion } from '../@types';
 export class PoolMessageBuilder {
   public static gasUsage = {
     MINT_GAS: toNano(0.5),
@@ -80,27 +92,76 @@ export class PoolMessageBuilder {
     return [jetton0Message, jetton1Message];
   }
 
-  // public static createEmulatedMintMessage(
+  public static async createEmulatedMintMessage(
+    tonApiClient: TonApiClient,
+    walletVersion: WalletVersion,
+    senderAddress: Address,
+    routerAddress: Address,
+    jetton0Amount: JettonAmount<Jetton>,
+    jetton1Amount: JettonAmount<Jetton>,
+    tickSpacing: number,
+    fee: number,
+    tickLower: bigint,
+    tickUpper: bigint,
+    liquidity: bigint,
+    responseAddress: Address,
+    workchain: number = 0,
+  ) {
+    const messages = this.createMintMessage(
+      routerAddress,
+      jetton0Amount,
+      jetton1Amount,
+      tickSpacing,
+      fee,
+      tickLower,
+      tickUpper,
+      liquidity,
+      responseAddress,
+    );
+    const { seqno } = await tonApiClient.wallet.getAccountSeqno(senderAddress);
+    const { publicKey: publicKeyHex } =
+      await tonApiClient.accounts.getAccountPublicKey(senderAddress);
+    const wallet = WalletContract.create(
+      workchain,
+      Buffer.from(publicKeyHex, 'hex'),
+      walletVersion,
+    );
+    const dummyKey = (await mnemonicToPrivateKey(await mnemonicNew())).secretKey;
+    const tr = wallet.createTransfer({
+      seqno,
+      secretKey: dummyKey,
+      sendMode: SendMode.PAY_GAS_SEPARATELY + SendMode.IGNORE_ERRORS,
+      messages: messages.map((m) => internal(m)),
+    });
+
+    // Create external message for emulation
+    const bocExternalMessage = beginCell()
+      .store(
+        storeMessage(
+          external({
+            to: senderAddress,
+            body: tr,
+          }),
+        ),
+      )
+      .endCell();
+
+    // Emulate transaction
+    const emulateTrace = await tonApiClient.emulation.emulateMessageToTrace(
+      { boc: bocExternalMessage },
+      { ignore_signature_check: true }, // Ignore signature for execute message from other account
+    );
+    return {
+      messages,
+      result: emulateTrace,
+    };
+  }
+
+  // public static async createSwapMessage(
   //   tonApiClient: TonApiClient,
+  //   walletVersion: WalletVersion,
   //   senderAddress: Address,
   //   routerAddress: Address,
-  //   jetton0Amount: JettonAmount<Jetton>,
-  //   jetton1Amount: JettonAmount<Jetton>,
-  //   tickSpacing: number,
-  //   fee: number,
-  //   tickLower: bigint,
-  //   tickUpper: bigint,
-  //   responseAddress: Address,
-  // ) {
-  //   const messages = this.createMintMessage(
-  //     routerAddress,
-  //     jetton0Amount,
-  //     jetton1Amount,
-  //     tickSpacing,
-  //     fee,
-  //     tickLower,
-  //     tickUpper,
-  //     senderAddress,
-  //   );
-  // }
+
+  // )
 }
