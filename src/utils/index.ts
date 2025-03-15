@@ -6,3 +6,7 @@ export * from './positionMath';
 export * from './position';
 export * from './fullMath';
 export * from './priceTickConversions';
+export * from './isSorted';
+export * from './tickList';
+export * from './swapMath';
+export * from './nearestUsableTick';

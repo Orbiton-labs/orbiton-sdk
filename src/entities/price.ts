@@ -1,12 +1,13 @@
 import invariant from 'tiny-invariant';
-import { BigintIsh } from '../@types';
-import { Fraction } from './fraction';
-import { Rounding } from '../enums/rounding';
+
+import { BigintIsh, Rounding } from '../@types';
 import { Jetton } from './jetton';
+import { Fraction } from './fraction';
 import { JettonAmount } from './jettonAmount';
 
 export class Price<TBase extends Jetton, TQuote extends Jetton> extends Fraction {
   public readonly baseJetton: TBase; // input i.e. denominator
+
   public readonly quoteJetton: TQuote; // output i.e. numerator
 
   public readonly scalar: Fraction; // used to adjust the raw fraction w/r/t the decimals of the {base,quote}Token
@@ -18,12 +19,7 @@ export class Price<TBase extends Jetton, TQuote extends Jetton> extends Fraction
   public constructor(
     ...args:
       | [TBase, TQuote, BigintIsh, BigintIsh]
-      | [
-          {
-            baseAmount: JettonAmount<TBase>;
-            quoteAmount: JettonAmount<TQuote>;
-          },
-        ]
+      | [{ baseAmount: JettonAmount<TBase>; quoteAmount: JettonAmount<TQuote> }]
   ) {
     let baseJetton: TBase;
     let quoteJetton: TQuote;
@@ -31,6 +27,7 @@ export class Price<TBase extends Jetton, TQuote extends Jetton> extends Fraction
     let numerator: BigintIsh;
 
     if (args.length === 4) {
+      // eslint-disable-next-line @typescript-eslint/no-extra-semi
       [baseJetton, quoteJetton, denominator, numerator] = args;
     } else {
       const result = args[0].quoteAmount.divide(args[0].baseAmount);
@@ -92,20 +89,20 @@ export class Price<TBase extends Jetton, TQuote extends Jetton> extends Fraction
     return super.multiply(this.scalar);
   }
 
-  public toSignificant(
-    significantDigits: number = 6,
-    format?: object,
-    rounding?: Rounding,
-  ): string {
+  public toSignificant(significantDigits = 6, format?: object, rounding?: Rounding): string {
     return this.adjustedForDecimals.toSignificant(significantDigits, format, rounding);
   }
 
-  public toFixed(decimalPlaces: number = 4, format?: object, rounding?: Rounding): string {
+  public toFixed(decimalPlaces = 4, format?: object, rounding?: Rounding): string {
     return this.adjustedForDecimals.toFixed(decimalPlaces, format, rounding);
   }
 
-  /* new for TONCO */
-  public get asFraction(): Fraction {
-    return new Fraction(this.adjustedForDecimals.numerator, this.adjustedForDecimals.denominator);
+  public get wrapped(): Price<Jetton, Jetton> {
+    return new Price(
+      this.baseJetton.wrapped,
+      this.quoteJetton.wrapped,
+      this.denominator,
+      this.numerator,
+    );
   }
 }

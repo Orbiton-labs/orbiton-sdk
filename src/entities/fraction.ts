@@ -3,8 +3,8 @@ import _Decimal from 'decimal.js-light';
 import _Big from 'big.js';
 // @ts-ignore
 import toFormat from 'toformat';
-import { Rounding } from '../enums';
-import { BigintIsh } from '../@types';
+
+import { BigintIsh, Rounding } from '../@types';
 
 const Decimal = toFormat(_Decimal);
 const Big = toFormat(_Big);

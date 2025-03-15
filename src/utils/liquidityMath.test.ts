@@ -5,7 +5,7 @@ import { LiquidityMath } from './liquidityMath';
 import { getHttpEndpoint } from '@orbs-network/ton-access';
 
 const usdc = new Jetton('EQCF8jfV05w00abPcvsW64XNanQ9vateIhCLSkNAQ7Qfo-WW', 9, 'USDC');
-const orb = new Jetton('EQCqaCb9S8wqYjPT1d18Z0f-HemRnEDm4heFyNfPKMESAIjQ', 6, 'Orbiton Swap');
+const orb = new Jetton('EQCqaCb9S8wqYjPT1d18Z0f-HemRnEDm4heFyNfPKMESAIjQ', 9, 'Orbiton Swap');
 
 describe('#getLiquidityBySingleAmount', () => {
   beforeAll(async () => {

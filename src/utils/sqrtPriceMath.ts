@@ -13,6 +13,15 @@ function addIn256(x: bigint, y: bigint): bigint {
   return sum & MaxUint256;
 }
 
+export function mulDivRoundingUp(a: bigint, b: bigint, denominator: bigint): bigint {
+  const product = a * b;
+  let result = product / denominator;
+  if (product % denominator != BigInt(0)) {
+    result += BigInt(1);
+  }
+  return result;
+}
+
 export abstract class SqrtPriceMath {
   /**
    * Cannot be constructed.

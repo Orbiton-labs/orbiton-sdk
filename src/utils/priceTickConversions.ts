@@ -1,4 +1,5 @@
-import { Price, Jetton } from '../entities';
+import { Price } from '../entities/price';
+import { Jetton } from '../entities/jetton';
 import { Q192 } from '../constants';
 import { encodeSqrtRatioX96 } from './encodeSqrtRatioX96';
 import { TickMath } from './tickMath';
