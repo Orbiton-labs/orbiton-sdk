@@ -4,6 +4,7 @@
     "": {
       "name": "root",
       "dependencies": {
+        "@ton-api/client": "^0.3.1",
         "big.js": "^6.2.2",
         "bignumber.js": "^9.1.2",
         "decimal.js": "^10.4.3",
@@ -211,6 +212,8 @@
 
     "@tact-lang/opcode": ["@tact-lang/opcode@0.3.1", "", { "dependencies": { "@ton/core": "^0.60.0", "@ton/crypto": "^3.3.0" } }, "sha512-DfLGz59yl0PPnqFnFzkwr20NNspe4ocZJlBgyTiikGxpS5932wE7Jb9tcKpLqVKzR0TFiqBK0RbOTHM3e6qCRA=="],
 
+    "@ton-api/client": ["@ton-api/client@0.3.1", "", { "dependencies": { "core-js-pure": "^3.38.0" }, "peerDependencies": { "@ton/core": ">=0.59.0" } }, "sha512-QwKcYcX9vaudJK7E7Gfx87A/TU1LgAUrNGdW6OZVKvKxttoUQUtEtRqLk3xqyuhQK24IYAd6BQ6Ki33X7zSdaw=="],
+
     "@ton-community/func-js": ["@ton-community/func-js@0.7.0", "", { "dependencies": { "@ton-community/func-js-bin": "0.4.4-newops.1", "arg": "^5.0.2" }, "bin": { "func-js": "dist/cli.js" } }, "sha512-VYJsv6Pqz6+qh3HlZWReBG5W9RXutAdIFYDqmblPSCXfjBhx/QjON/3WoppzUVrqQQdD0BVIh4PR+xRHRCBNhw=="],
 
     "@ton-community/func-js-bin": ["@ton-community/func-js-bin@0.4.4-newops.1", "", {}, "sha512-TV4t6XhmItq4t+wv4pV30yEwb+YvdmsKo4Ig4B0zp4PLdI0r9iZHz4y5bBHcXmDQDRqulXzK6kTgfHvs2CIsaQ=="],
@@ -402,6 +405,8 @@
     "constant-case": ["constant-case@3.0.4", "", { "dependencies": { "no-case": "^3.0.4", "tslib": "^2.0.3", "upper-case": "^2.0.2" } }, "sha512-I2hSBi7Vvs7BEuJDr5dDHfzb/Ruj3FyvFyh7KLilAjNQw3Be+xgqUBA2W6scVEcL0hL1dwPRtIqEPVUCKkSsyQ=="],
 
     "convert-source-map": ["convert-source-map@2.0.0", "", {}, "sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg=="],
+
+    "core-js-pure": ["core-js-pure@3.41.0", "", {}, "sha512-71Gzp96T9YPk63aUvE5Q5qP+DryB4ZloUZPSOebGM88VNw8VNfvdA7z6kGA8iGOTEzAomsRidp4jXSmUIJsL+Q=="],
 
     "crc-32": ["crc-32@1.2.2", "", { "bin": { "crc32": "bin/crc32.njs" } }, "sha512-ROmzCKrTnOwybPcJApAA6WBWij23HVfGVNKqqrZpuyZOHqK2CwHSvpGuyt/UNNvaIjEd8X5IFGp4Mh+Ie1IHJQ=="],
 

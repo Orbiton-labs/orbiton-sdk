@@ -10,3 +10,4 @@ export * from './isSorted';
 export * from './tickList';
 export * from './swapMath';
 export * from './nearestUsableTick';
+export * from './priceParser';

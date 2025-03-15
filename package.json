@@ -1,6 +1,6 @@
 {
   "name": "@orbiton_labs/v3-contracts-sdk",
-  "version": "1.1.18",
+  "version": "1.1.19",
   "main": "build/index.js",
   "files": [
     "build"
@@ -31,6 +31,7 @@
   },
   "packageManager": "yarn@3.4.1",
   "dependencies": {
+    "@ton-api/client": "^0.3.1",
     "big.js": "^6.2.2",
     "bignumber.js": "^9.1.2",
     "decimal.js": "^10.4.3",

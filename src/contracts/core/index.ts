@@ -4,6 +4,7 @@ import JettonWalletWrapper from './JettonWallet';
 import RouterWrapper from './Router';
 import PoolWrapper from './Pool';
 import PositionWrapper from './Position';
+import { WalletContract, WalletContracts } from './WalletContract';
 
 export {
   BatchTickWrapper,
@@ -12,4 +13,6 @@ export {
   RouterWrapper,
   PoolWrapper,
   PositionWrapper,
+  WalletContract,
+  WalletContracts,
 };
