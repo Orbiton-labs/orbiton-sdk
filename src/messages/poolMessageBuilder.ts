@@ -19,7 +19,7 @@ import { storeOpCreatePool } from '../tlbs/router';
 export class PoolMessageBuilder {
   public static gasUsage = {
     CREATE_POOL: toNano(0.1),
-    MINT_GAS: toNano(0.5),
+    MINT_GAS: toNano(0.8),
     SWAP_GAS: toNano(1.2),
   };
 
@@ -77,7 +77,7 @@ export class PoolMessageBuilder {
       to_address: routerAddress,
       response_address: responseAddress,
       custom_payload: beginCell().storeDict(Dictionary.empty()).endCell(),
-      forward_ton_amount: toNano(0.1),
+      forward_ton_amount: toNano(0.15),
       either_payload: true,
       mint: {
         kind: 'MintParams',
@@ -92,7 +92,7 @@ export class PoolMessageBuilder {
     })(jetton0PayloadBuilder);
     const jetton0Message = {
       to: jetton0Amount.jetton.walletAddress,
-      value: toNano(0.15),
+      value: toNano(0.2),
       body: jetton0PayloadBuilder.endCell(),
     };
 
@@ -104,7 +104,7 @@ export class PoolMessageBuilder {
       to_address: routerAddress,
       response_address: responseAddress,
       custom_payload: beginCell().storeDict(Dictionary.empty()).endCell(),
-      forward_ton_amount: toNano(0.35),
+      forward_ton_amount: toNano(0.4),
       either_payload: true,
       mint: {
         kind: 'MintParams',
@@ -117,10 +117,9 @@ export class PoolMessageBuilder {
         liquidity_delta: liquidity,
       },
     })(jetton1PayloadBuilder);
-
     const jetton1Message = {
       to: jetton1Amount.jetton.walletAddress,
-      value: this.gasUsage.MINT_GAS - toNano(0.15),
+      value: this.gasUsage.MINT_GAS - toNano(0.2),
       body: jetton1PayloadBuilder.endCell(),
     };
     return [jetton0Message, jetton1Message];
