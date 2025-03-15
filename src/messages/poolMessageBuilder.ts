@@ -116,7 +116,7 @@ export class PoolMessageBuilder {
       mint: {
         kind: 'MintParams',
         forward_opcode: PoolWrapper.Opcodes.Mint,
-        jetton1_wallet: jetton1Router.walletAddress,
+        jetton1_wallet: jetton0Router.walletAddress,
         tick_lower: Number(tickLower),
         tick_upper: Number(tickUpper),
         fee,
