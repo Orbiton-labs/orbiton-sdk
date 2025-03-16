@@ -494,7 +494,7 @@ export class PoolMessageBuilder {
         .endCell();
 
       return {
-        to: amount.jetton.walletAddress!,
+        to: Address.parse(ptonRouterWallet),
         value: this.gasUsage.MINT_GAS + amount.quotient,
         body: msgBuilder,
       };
