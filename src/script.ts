@@ -47,27 +47,28 @@ const main = async () => {
     ),
     orbUser.setWalletAddress(tc, Address.parse('0QBkxNmedeIS12e9bD0PO6nPaRMpU3dnijh90OH5Dtjqpbjb')),
   ]);
-  const { messages, result } = await PoolMessageBuilder.createEmulatedMintMessage(
-    ta,
-    WalletVersion.V4R2,
-    Address.parse('0QBkxNmedeIS12e9bD0PO6nPaRMpU3dnijh90OH5Dtjqpbjb'),
-    Address.parse('EQCeuRLbIAm__PPiU-Ej-D6iR_4K1wAdF_ABttWUw086IzZu'),
-    usdc, // router 0
-    orb, // router 1
-    JettonAmount.fromRawAmount(usdcUser, 1000000000000n), // user 0
-    JettonAmount.fromRawAmount(orbUser, 1000000000000n), // user 1
-    60, // tick spacing
-    3000, // fee
-    -240000n, // tick lower
-    120000n, // tick upper
-    316475945059n,
-    Address.parse('0QBkxNmedeIS12e9bD0PO6nPaRMpU3dnijh90OH5Dtjqpbjb'),
-  );
+  
+  // const { messages, result } = await PoolMessageBuilder.createEmulatedMintMessage(
+  //   ta,
+  //   WalletVersion.V4R2,
+  //   Address.parse('0QBkxNmedeIS12e9bD0PO6nPaRMpU3dnijh90OH5Dtjqpbjb'),
+  //   Address.parse('EQCeuRLbIAm__PPiU-Ej-D6iR_4K1wAdF_ABttWUw086IzZu'),
+  //   usdc, // router 0
+  //   orb, // router 1
+  //   JettonAmount.fromRawAmount(usdcUser, 1000000000000n), // user 0
+  //   JettonAmount.fromRawAmount(orbUser, 1000000000000n), // user 1
+  //   60, // tick spacing
+  //   3000, // fee
+  //   -240000n, // tick lower
+  //   120000n, // tick upper
+  //   316475945059n,
+  //   Address.parse('0QBkxNmedeIS12e9bD0PO6nPaRMpU3dnijh90OH5Dtjqpbjb'),
+  // );
 
-  for (const message of messages) {
-    await sender.send(message);
-    await setTimeout(1000);
-  }
+      // for (const message of messages) {
+      //   await sender.send(message);
+      //   await setTimeout(1000);
+      // }
 };
 
 main().catch((er) => console.log(er));
