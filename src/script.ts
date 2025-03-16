@@ -18,11 +18,7 @@ const main = async () => {
     }),
   });
 
-  const { publicKey, secretKey } = await mnemonicToWalletKey(
-    'visa bid goose elite grab hidden dilemma blur album depend print private bird marriage ceiling address pass guide useless label manage drum conduct digital'.split(
-      ' ',
-    ),
-  );
+  const { publicKey, secretKey } = await mnemonicToWalletKey(''.split(' '));
   const wallet = WalletContractV4.create({
     publicKey,
     workchain: 0,
@@ -32,7 +28,7 @@ const main = async () => {
 
   const ta = new TonApiClient({
     baseUrl: `https://testnet.tonapi.io`,
-    apiKey: 'AGSNOVUCGDJF32AAAAANN2LHR6HNAGLSAAHD4X3MNJGOJNJ45MAK4JNTWOT3V5RHGNJC5QY',
+    apiKey: '',
   });
   const usdc = new Jetton('EQCF8jfV05w00abPcvsW64XNanQ9vateIhCLSkNAQ7Qfo-WW', 9, 'USDC');
   const orb = new Jetton('EQCqaCb9S8wqYjPT1d18Z0f-HemRnEDm4heFyNfPKMESAIjQ', 9, 'Orbiton Swap');
