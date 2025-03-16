@@ -98,6 +98,11 @@ export function maxLiquidityForAmounts(
   if (sqrtRatioCurrentX96 < sqrtRatioBX96) {
     const liquidity0 = maxLiquidityForAmount0(sqrtRatioCurrentX96, sqrtRatioBX96, amount0);
     const liquidity1 = maxLiquidityForAmount1(sqrtRatioAX96, sqrtRatioCurrentX96, amount1);
+    if (liquidity0 < liquidity1) {
+      console.log('Choose liquidity 0:', liquidity0, amount0, amount1);
+    } else {
+      console.log('Choose liquidity 1:', liquidity1, amount0, amount1);
+    }
     return liquidity0 < liquidity1 ? liquidity0 : liquidity1;
   }
   return maxLiquidityForAmount1(sqrtRatioAX96, sqrtRatioBX96, amount1);
