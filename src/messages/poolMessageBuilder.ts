@@ -44,6 +44,11 @@ export class PoolMessageBuilder {
       fee,
       tick_spacing: tickSpacing,
       sqrt_price_x96: sqrtPriceX96,
+      jetton_master_ref: {
+        kind: 'JettonMasterRef',
+        jetton0_master: jetton0.address,
+        jetton1_master: jetton1.address,
+      },
     })(routerPayloadBuilder);
     return [
       {
