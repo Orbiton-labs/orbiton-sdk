@@ -17,7 +17,7 @@ import { MintParams, storeMintParams, storeOpJettonTransferMint, storeOpJettonTr
 import { WalletVersion } from '../@types';
 import { storeOpCreatePool } from '../tlbs/router';
 import { Position } from '../entities/position';
-import { Chain, ContractAddressesFromChain } from '../constants';
+import { Chain, ContractAddresses, ContractAddressesFromChain } from '../constants';
 import { PTonWalletWrapper } from '../contracts/core/PTonWallet';
 import { BurnPositionMessage, storeBurnPositionMessage, CollectMessage, storeCollectMessage } from '../tlbs/position';
 import { computePositionAddress } from '../functions/computePositionAddress';
@@ -35,15 +35,19 @@ export class PoolMessageBuilder {
    * Creates a message to create a new pool
    */
   public static createCreatePoolMessage(
-    routerAddress: Address,
+    
     jetton0: Jetton,
     jetton1: Jetton,
     tickSpacing: number,
     fee: number,
     sqrtPriceX96: bigint,
+    chain: Chain = Chain.Mainnet,
+    customContractAddresses?: ContractAddresses,
   ): SenderArguments[] {
     this.validateJettonWallets([jetton0, jetton1]);
 
+    const { ROUTER } = customContractAddresses ?? ContractAddressesFromChain[chain];
+    const routerAddress = Address.parse(ROUTER);
     const routerPayloadBuilder = beginCell();
     storeOpCreatePool({
       kind: 'OpCreatePool',
@@ -75,10 +79,11 @@ export class PoolMessageBuilder {
     position: Position,
     responseAddress: Address,
     chain: Chain = Chain.Mainnet,
+    customContractAddresses?: ContractAddresses,
   ): SenderArguments[] {
     const { tickLower, tickUpper, liquidity, pool } = position;
     const { tickSpacing, fee } = pool;
-    const { ROUTER, PTON_ROUTER_WALLET } = ContractAddressesFromChain[chain];
+    const { ROUTER, PTON_ROUTER_WALLET } = customContractAddresses ?? ContractAddressesFromChain[chain];
     
     // Validate all wallet addresses
     this.validateJettonWallets([
@@ -140,8 +145,9 @@ export class PoolMessageBuilder {
     sqrtPriceLimit: bigint,
     responseAddress: Address,
     chain: Chain = Chain.Mainnet,
+    customContractAddresses?: ContractAddresses,
   ): SenderArguments[] {
-    const { ROUTER, PTON_ROUTER_WALLET } = ContractAddressesFromChain[chain];
+    const { ROUTER, PTON_ROUTER_WALLET } = customContractAddresses ?? ContractAddressesFromChain[chain];
     const routerAddress = Address.parse(ROUTER);
 
     this.validateJettonWallets([amount.jetton, desiredJetton]);
@@ -184,6 +190,8 @@ export class PoolMessageBuilder {
     owner: Address,
     poolAddress: Address,
     liquidityDelta: bigint,
+    chain: Chain = Chain.Mainnet,
+    customContractAddresses?: ContractAddresses,
   ): SenderArguments[] {
     const burnMessage: BurnPositionMessage = {
       kind: 'BurnPositionMessage',
@@ -229,6 +237,7 @@ export class PoolMessageBuilder {
     responseAddress: Address,
     workchain: number = 0,
     chain: Chain = Chain.Mainnet,
+    customContractAddresses?: ContractAddresses,
   ) {
     const messages = this.createMintMessage(
       jetton0Router,
@@ -238,6 +247,7 @@ export class PoolMessageBuilder {
       position,
       responseAddress,
       chain,
+      customContractAddresses,
     );
     
     return this.emulateMessages(
@@ -245,7 +255,9 @@ export class PoolMessageBuilder {
       walletVersion,
       senderAddress,
       messages,
-      workchain
+      workchain,
+      chain,
+      customContractAddresses,
     );
   }
 
@@ -264,6 +276,7 @@ export class PoolMessageBuilder {
     responseAddress: Address,
     workchain: number = 0,
     chain: Chain = Chain.Mainnet,
+    customContractAddresses?: ContractAddresses,
   ) {
     const messages = this.createExactInSwapMessage(
       amount,
@@ -273,6 +286,7 @@ export class PoolMessageBuilder {
       sqrtPriceLimit,
       responseAddress,
       chain,
+      customContractAddresses,
     );
     
     return this.emulateMessages(
@@ -280,7 +294,9 @@ export class PoolMessageBuilder {
       walletVersion,
       senderAddress,
       messages,
-      workchain
+      workchain,
+      chain,
+      customContractAddresses,
     );
   }
 
@@ -295,12 +311,16 @@ export class PoolMessageBuilder {
     owner: Address,
     poolAddress: Address,
     workchain: number = 0,
+    chain: Chain = Chain.Mainnet,
+    customContractAddresses?: ContractAddresses,
   ) {
     const messages = this.createBurnMessage(
       position, 
       owner, 
       poolAddress, 
-      position.liquidity
+      position.liquidity,
+      chain,
+      customContractAddresses,
     );
     
     return this.emulateMessages(
@@ -308,7 +328,9 @@ export class PoolMessageBuilder {
       walletVersion,
       senderAddress,
       messages,
-      workchain
+      workchain,
+      chain,
+      customContractAddresses,
     );
   }
 
@@ -322,6 +344,8 @@ export class PoolMessageBuilder {
     recipient: Address,
     amount0Requested: bigint,
     amount1Requested: bigint,
+    chain: Chain = Chain.Mainnet,
+    customContractAddresses?: ContractAddresses,
   ) {
     const collectMessage: CollectMessage = {
       kind: 'CollectMessage',
@@ -562,7 +586,9 @@ export class PoolMessageBuilder {
     walletVersion: WalletVersion,
     senderAddress: Address,
     messages: SenderArguments[],
-    workchain: number = 0
+    workchain: number = 0,
+    chain: Chain = Chain.Mainnet,
+    customContractAddresses?: ContractAddresses,
   ) {
     // Get account information
     const { seqno } = await tonApiClient.wallet.getAccountSeqno(senderAddress);
