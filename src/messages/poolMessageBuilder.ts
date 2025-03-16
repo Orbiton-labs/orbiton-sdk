@@ -168,7 +168,7 @@ export class PoolMessageBuilder {
       zeroForOne
     );
 
-    const isTonToJetton = amount.jetton.address.equals(Address.parse(PTON_ROUTER_WALLET));
+    const isTonToJetton = amount.jetton.walletAddress!.equals(Address.parse(PTON_ROUTER_WALLET));
 
     if (isTonToJetton) {
       return this.createTonToJettonSwapMessage(
@@ -349,8 +349,7 @@ export class PoolMessageBuilder {
     recipient: Address,
     amount0Requested: bigint,
     amount1Requested: bigint,
-    chain: Chain = Chain.Mainnet,
-    customContractAddresses?: ContractAddresses,
+
   ) {
     const collectMessage: CollectMessage = {
       kind: 'CollectMessage',
@@ -480,7 +479,7 @@ export class PoolMessageBuilder {
     ptonRouterWallet: string,
     value: bigint
   ): SenderArguments {
-    const isPTon = jetton.address.equals(Address.parse(ptonRouterWallet));
+    const isPTon = jetton.walletAddress!.equals(Address.parse(ptonRouterWallet));
 
     if (isPTon) {
       const paramsCell = beginCell();
