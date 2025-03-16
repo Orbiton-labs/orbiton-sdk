@@ -35,7 +35,6 @@ export class PoolMessageBuilder {
    * Creates a message to create a new pool
    */
   public static createCreatePoolMessage(
-    
     jetton0: Jetton,
     jetton1: Jetton,
     tickSpacing: number,
@@ -131,9 +130,9 @@ export class PoolMessageBuilder {
       amount1, 
       mintParams1, 
       responseAddress, 
-      PTON_ROUTER_WALLET, 
       ROUTER,
-      this.gasUsage.MINT_GAS - toNano(0.2)
+      PTON_ROUTER_WALLET, 
+      toNano(0.2)
     );
 
     return [jetton0Message, jetton1Message];
@@ -496,7 +495,7 @@ export class PoolMessageBuilder {
 
       return {
         to: amount.jetton.walletAddress!,
-        value,
+        value: this.gasUsage.MINT_GAS + amount.quotient,
         body: msgBuilder,
       };
     } else {
