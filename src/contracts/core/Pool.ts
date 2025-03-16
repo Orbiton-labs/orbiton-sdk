@@ -51,6 +51,11 @@ namespace PoolWrapper {
       readonly init?: { code: Cell; data: Cell },
     ) {}
 
+    static isSorted(jetton0: Address, jetton1: Address) {
+      return BigInt(`0x${beginCell().storeAddress(jetton0).endCell().hash().toString('hex')}`) <
+      BigInt(`0x${beginCell().storeAddress(jetton1).endCell().hash().toString('hex')}`);
+    }
+
     static setWorkchain(workchain: number) {
       Pool.workchain = workchain;
     }
