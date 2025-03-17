@@ -109,6 +109,10 @@ export class Position {
     return this._token1Amount;
   }
 
+  public setLiquidity(value: bigint) {
+    this.liquidity = value;
+  }
+
   /**
    * Returns the lower and upper sqrt ratios if the price 'slips' up to slippage tolerance percentage
    * @param slippageTolerance The amount by which the price can 'slip' before the transaction will revert

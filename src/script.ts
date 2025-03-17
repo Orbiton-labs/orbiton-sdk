@@ -67,8 +67,6 @@ const main = async () => {
   //   Address.parse('0QBkxNmedeIS12e9bD0PO6nPaRMpU3dnijh90OH5Dtjqpbjb'),
   // );
 
-
-
   // for (const message of messages) {
   //   await sender.send(message);
   //   await setTimeout(1000);
