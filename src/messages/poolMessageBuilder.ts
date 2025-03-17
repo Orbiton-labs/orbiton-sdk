@@ -150,6 +150,7 @@ export class PoolMessageBuilder {
     fee: number,
     sqrtPriceLimit: bigint,
     responseAddress: Address,
+    zeroForOne: number,
     chain: Chain = Chain.Mainnet,
     customContractAddresses?: ContractAddresses,
   ): SenderArguments[] {
@@ -158,9 +159,6 @@ export class PoolMessageBuilder {
 
     this.validateJettonWallets([amount.jetton, desiredJetton]);
     
-    const isSorted = PoolWrapper.Pool.isSorted(amount.jetton.walletAddress!, desiredJetton.walletAddress!);
-    const zeroForOne = isSorted ? -1 : 0;
-
     const swapParams = this.createSwapParams(
       fee, 
       desiredJetton.walletAddress!, 
@@ -278,6 +276,7 @@ export class PoolMessageBuilder {
     fee: number,
     sqrtPriceLimit: bigint,
     responseAddress: Address,
+    zeroForOne: number,
     workchain: number = 0,
     chain: Chain = Chain.Mainnet,
     customContractAddresses?: ContractAddresses,
@@ -289,6 +288,7 @@ export class PoolMessageBuilder {
       fee,
       sqrtPriceLimit,
       responseAddress,
+      zeroForOne,
       chain,
       customContractAddresses,
     );

@@ -1,10 +1,6 @@
 {
   "name": "@orbiton_labs/v3-contracts-sdk",
-<<<<<<< HEAD
   "version": "1.1.41",
-=======
-  "version": "1.1.38",
->>>>>>> 7d4f2602404bef8784ddb9b1bce92474c3954d50
   "main": "build/index.js",
   "files": [
     "build"
