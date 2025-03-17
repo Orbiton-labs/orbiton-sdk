@@ -25,7 +25,8 @@ import { computePositionAddress } from '../functions/computePositionAddress';
 export class PoolMessageBuilder {
   public static gasUsage = {
     CREATE_POOL: toNano(0.1),
-    MINT_GAS: toNano(0.8),
+    MINT_GAS: toNano(0.4),
+    FORWARD_MINT_GAS: toNano(0.35),
     SWAP_GAS: toNano(1.2),
     BURN_GAS: toNano(0.3),
     COLLECT_GAS: toNano(0.3),
@@ -115,24 +116,24 @@ export class PoolMessageBuilder {
     const mintParams1 = this.createMintParams(jetton0.walletAddress!, tickLower, tickUpper, fee, tickSpacing, liquidity);
 
     // Create messages
-    const jetton0Message = this.createJettonMessage(
+    const jetton0Message = this.createJettonMessageMint(
       jetton0, 
       amount0, 
       mintParams0, 
       responseAddress, 
       ROUTER, 
       PTON_ROUTER_WALLET,
-      toNano(0.2)
+      this.gasUsage.MINT_GAS
     );
 
-    const jetton1Message = this.createJettonMessage(
+    const jetton1Message = this.createJettonMessageMint(
       jetton1, 
       amount1, 
       mintParams1, 
       responseAddress, 
       ROUTER,
       PTON_ROUTER_WALLET, 
-      toNano(0.2)
+      this.gasUsage.MINT_GAS
     );
 
     return [jetton0Message, jetton1Message];
@@ -240,8 +241,6 @@ export class PoolMessageBuilder {
     position: Position,
     responseAddress: Address,
     workchain: number = 0,
-    chain: Chain = Chain.Mainnet,
-    customContractAddresses?: ContractAddresses,
   ) {
     const messages = this.createMintMessage(
       jetton0Router,
@@ -250,8 +249,6 @@ export class PoolMessageBuilder {
       jetton1Amount,
       position,
       responseAddress,
-      chain,
-      customContractAddresses,
     );
     
     return this.emulateMessages(
@@ -260,8 +257,6 @@ export class PoolMessageBuilder {
       senderAddress,
       messages,
       workchain,
-      chain,
-      customContractAddresses,
     );
   }
 
@@ -299,8 +294,6 @@ export class PoolMessageBuilder {
       senderAddress,
       messages,
       workchain,
-      chain,
-      customContractAddresses,
     );
   }
 
@@ -333,8 +326,6 @@ export class PoolMessageBuilder {
       senderAddress,
       messages,
       workchain,
-      chain,
-      customContractAddresses,
     );
   }
 
@@ -469,7 +460,7 @@ export class PoolMessageBuilder {
   /**
    * Creates a jetton message for mint operation
    */
-  private static createJettonMessage(
+  private static createJettonMessageMint(
     jetton: Jetton,
     amount: JettonAmount<Jetton>,
     params: MintParams,
@@ -495,7 +486,7 @@ export class PoolMessageBuilder {
 
       return {
         to: Address.parse(ptonRouterWallet),
-        value: this.gasUsage.MINT_GAS + amount.quotient,
+        value: value + amount.quotient,
         body: msgBuilder,
       };
     } else {
@@ -507,7 +498,7 @@ export class PoolMessageBuilder {
         to_address: Address.parse(routerAddress),
         response_address: responseAddress,
         custom_payload: beginCell().storeDict(Dictionary.empty()).endCell(),
-        forward_ton_amount: toNano(0.15),
+        forward_ton_amount: this.gasUsage.FORWARD_MINT_GAS,
         either_payload: true,
         mint: params,
       })(payloadBuilder);
@@ -590,8 +581,6 @@ export class PoolMessageBuilder {
     senderAddress: Address,
     messages: SenderArguments[],
     workchain: number = 0,
-    chain: Chain = Chain.Mainnet,
-    customContractAddresses?: ContractAddresses,
   ) {
     // Get account information
     const { seqno } = await tonApiClient.wallet.getAccountSeqno(senderAddress);
