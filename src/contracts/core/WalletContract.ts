@@ -1,5 +1,8 @@
 import {
   Cell,
+  ContractProvider,
+  MessageRelaxed,
+  SendMode,
   WalletContractV3R1,
   WalletContractV3R2,
   WalletContractV4,
@@ -14,6 +17,7 @@ import {
   Wallet4SendArgsSignable,
   Wallet4SendArgsSigned,
 } from '@ton/ton/dist/wallets/WalletContractV4';
+import { Maybe } from '@ton/core/dist/utils/maybe';
 
 // function overloading
 interface IWalletContract {
@@ -24,6 +28,11 @@ interface IWalletContract {
   createTransfer<T extends Wallet4SendArgsSigned | Wallet4SendArgsSignable>(
     args: T,
   ): T extends Wallet4SendArgsSignable ? Promise<Cell> : Cell;
+
+  /**
+   * Send signed transfer
+   */
+  send(provider: ContractProvider, message: Cell): Promise<void>;
 }
 
 export class WalletContract {
