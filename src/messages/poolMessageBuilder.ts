@@ -241,6 +241,8 @@ export class PoolMessageBuilder {
     position: Position,
     responseAddress: Address,
     workchain: number = 0,
+    chain: Chain = Chain.Mainnet,
+    customContractAddresses?: ContractAddresses,
   ) {
     const messages = this.createMintMessage(
       jetton0Router,
@@ -249,6 +251,8 @@ export class PoolMessageBuilder {
       jetton1Amount,
       position,
       responseAddress,
+      chain,
+      customContractAddresses,
     );
     
     return this.emulateMessages(
