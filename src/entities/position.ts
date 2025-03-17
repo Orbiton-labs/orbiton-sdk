@@ -30,7 +30,7 @@ export class Position {
 
   public readonly tickUpper: number;
 
-  public readonly liquidity: bigint;
+  public liquidity: bigint;
 
   // cached resuts for the getters
   private _token0Amount: JettonAmount<Jetton> | null = null;
