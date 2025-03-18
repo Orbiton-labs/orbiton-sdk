@@ -76,6 +76,15 @@ export class PoolMessageBuilder {
 
   /**
    * Creates a message to mint a position
+   * @param jetton0Router - The token0 jetton router
+   * @param jetton1Router - The token1 jetton router
+   * @param jetton0Amount - JettonAmount<Jetton> class with jetton amount0 of user
+   * @param jetton1Amount - JettonAmount<Jetton> class with jetton amount1 of user
+   * @param position - Position class with tickLower, tickUpper, liquidity, and pool
+   * @param responseAddress - The address to send the response
+   * @param chain - The chain to use
+   * @param customContractAddresses - The custom contract addresses to use
+   * @returns SenderArguments[] - The messages to mint a position
    */
   public static createMintMessage(
     jetton0Router: Jetton,
@@ -142,6 +151,17 @@ export class PoolMessageBuilder {
 
   /**
    * Creates a message for exact-in swap
+   * @param amount - JettonAmount<Jetton> class with jetton amount of user
+   * @param desiredJetton - Jetton class with desired jetton
+   * @param tickSpacing - The tick spacing
+   * @param fee - The fee
+   * @param sqrtPriceLimit - The sqrt price limit
+   * @param responseAddress - The address to send the response
+   * @param zeroForOne - Whether the swap is from token0 to token1 or token1 to token0
+   * @param isTonToJetton - Whether the swap is from TON to jetton
+   * @param chain - The chain to use
+   * @param customContractAddresses - The custom contract addresses to use
+   * @returns SenderArguments[] - The messages to swap
    */
   public static createExactInSwapMessage(
     amount: JettonAmount<Jetton>,
@@ -185,6 +205,13 @@ export class PoolMessageBuilder {
 
   /**
    * Creates a message to burn a position
+   * @param position - Position class with tickLower, tickUpper, liquidity, and pool
+   * @param owner - The owner of the position
+   * @param poolAddress - The address of the pool
+   * @param liquidityDelta - The liquidity delta to burn
+   * @param chain - The chain to use
+   * @param customContractAddresses - The custom contract addresses to use
+   * @returns SenderArguments[] - The messages to burn a position
    */
   public static createBurnMessage(
     position: Position,
@@ -225,6 +252,19 @@ export class PoolMessageBuilder {
 
   /**
    * Creates an emulated mint message
+   * @param tonApiClient - The TON API client
+   * @param walletVersion - The wallet version
+   * @param senderAddress - The address of the sender
+   * @param jetton0Router - The token0 jetton router
+   * @param jetton1Router - The token1 jetton router
+   * @param jetton0Amount - JettonAmount<Jetton> class with jetton amount0 of user
+   * @param jetton1Amount - JettonAmount<Jetton> class with jetton amount1 of user
+   * @param position - Position class with tickLower, tickUpper, liquidity, and pool
+   * @param responseAddress - The address to send the response
+   * @param workchain - The workchain to use
+   * @param chain - The chain to use
+   * @param customContractAddresses - The custom contract addresses to use
+   * @returns SenderArguments[] - The messages to mint a position
    */
   public static async createEmulatedMintMessage(
     tonApiClient: TonApiClient,
@@ -262,6 +302,21 @@ export class PoolMessageBuilder {
 
   /**
    * Creates an emulated exact-in swap message
+   * @param tonApiClient - The TON API client
+   * @param walletVersion - The wallet version
+   * @param senderAddress - The address of the sender
+   * @param amount - JettonAmount<Jetton> class with jetton amount of user
+   * @param desiredJetton - Jetton class with desired jetton
+   * @param tickSpacing - The tick spacing
+   * @param fee - The fee
+   * @param sqrtPriceLimit - The sqrt price limit
+   * @param responseAddress - The address to send the response
+   * @param zeroForOne - Whether the swap is from token0 to token1 or token1 to token0
+   * @param isTonToJetton - Whether the swap is from TON to jetton
+   * @param workchain - The workchain to use
+   * @param chain - The chain to use
+   * @param customContractAddresses - The custom contract addresses to use
+   * @returns SenderArguments[] - The messages to swap
    */
   public static async createEmulatedExactInSwapMessage(
     tonApiClient: TonApiClient,
@@ -302,7 +357,17 @@ export class PoolMessageBuilder {
   }
 
   /**
-   * Creates an emulated burn message
+    * Creates an emulated burn message
+   * @param tonApiClient - The TON API client
+   * @param walletVersion - The wallet version
+   * @param senderAddress - The address of the sender
+   * @param position - Position class with tickLower, tickUpper, liquidity, and pool
+   * @param owner - The owner of the position
+   * @param poolAddress - The address of the pool
+   * @param workchain - The workchain to use
+   * @param chain - The chain to use
+   * @param customContractAddresses - The custom contract addresses to use
+   * @returns SenderArguments[] - The messages to burn a position
    */
   public static async createEmulatedBurnMessage(
     tonApiClient: TonApiClient,
@@ -335,6 +400,13 @@ export class PoolMessageBuilder {
 
   /**
    * Creates a message to collect tokens from a position
+   * @param position - Position class with tickLower, tickUpper, liquidity, and pool
+   * @param owner - The owner of the position
+   * @param poolAddress - The address of the pool
+   * @param recipient - The recipient of the tokens
+   * @param amount0Requested - The amount of token0 requested
+   * @param amount1Requested - The amount of token1 requested
+   * @returns SenderArguments[] - The messages to collect tokens from a position
    */
   public static createCollectMessage(
     position: Position,
@@ -343,7 +415,6 @@ export class PoolMessageBuilder {
     recipient: Address,
     amount0Requested: bigint,
     amount1Requested: bigint,
-
   ) {
     const collectMessage: CollectMessage = {
       kind: 'CollectMessage',
