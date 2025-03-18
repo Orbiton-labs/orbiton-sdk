@@ -58,7 +58,6 @@ const main = async () => {
     },
   );
 
-  const transaction = em;
   console.dir(emulatedResult.result.children, { depth: null });
 };
 
