@@ -151,14 +151,13 @@ export class PoolMessageBuilder {
     sqrtPriceLimit: bigint,
     responseAddress: Address,
     zeroForOne: number,
+    isTonToJetton: boolean,
     chain: Chain = Chain.Mainnet,
     customContractAddresses?: ContractAddresses,
   ): SenderArguments[] {
     const { ROUTER, PTON_ROUTER_WALLET } = customContractAddresses ?? ContractAddressesFromChain[chain];
     const routerAddress = Address.parse(ROUTER);
-
     this.validateJettonWallets([amount.jetton, desiredJetton]);
-    
     const swapParams = this.createSwapParams(
       fee, 
       desiredJetton.walletAddress!, 
@@ -166,8 +165,6 @@ export class PoolMessageBuilder {
       tickSpacing, 
       zeroForOne
     );
-
-    const isTonToJetton = amount.jetton.walletAddress!.equals(Address.parse(PTON_ROUTER_WALLET));
 
     if (isTonToJetton) {
       return this.createTonToJettonSwapMessage(
@@ -277,6 +274,7 @@ export class PoolMessageBuilder {
     sqrtPriceLimit: bigint,
     responseAddress: Address,
     zeroForOne: number,
+    isTonToJetton: boolean,
     workchain: number = 0,
     chain: Chain = Chain.Mainnet,
     customContractAddresses?: ContractAddresses,
@@ -289,6 +287,7 @@ export class PoolMessageBuilder {
       sqrtPriceLimit,
       responseAddress,
       zeroForOne,
+      isTonToJetton,
       chain,
       customContractAddresses,
     );

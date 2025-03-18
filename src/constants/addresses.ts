@@ -16,10 +16,10 @@ export type ContractAddresses = {
 export const ContractAddressesFromChain: Record<Chain,ContractAddresses> = {
     [Chain.Mainnet]: {
         ROUTER: '',
-        PTON_ROUTER_WALLET: ''
+        PTON_ROUTER_WALLET: '',
     },
     [Chain.Testnet]: {
         ROUTER: '',
-        PTON_ROUTER_WALLET: ''
+        PTON_ROUTER_WALLET: '',
     }
 }
