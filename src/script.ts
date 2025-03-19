@@ -69,7 +69,7 @@ const main = async () => {
   const usdc = new Jetton('EQCF8jfV05w00abPcvsW64XNanQ9vateIhCLSkNAQ7Qfo-WW', 9, 'USDC');
   const orb = new Jetton('EQCqaCb9S8wqYjPT1d18Z0f-HemRnEDm4heFyNfPKMESAIjQ', 9, 'Orbiton Swap');
   await Promise.all([
-    usdc.setWalletAddress(tc, Address.parse('EQAQW9X_hfjQhG3F7Oo_fwP3Ty9lpVnYTydGRcezhaI7nED_')),
+    usdc.setWalletAddress(tc, walletAddress),
     orb.setWalletAddress(tc, Address.parse('EQAQW9X_hfjQhG3F7Oo_fwP3Ty9lpVnYTydGRcezhaI7nED_')),
   ]);
 
